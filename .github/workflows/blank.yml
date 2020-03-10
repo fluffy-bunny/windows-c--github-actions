@@ -27,10 +27,17 @@ jobs:
     - name: Setup Nuget.exe
       uses: warrenbuckley/Setup-Nuget@v1
 
+    - uses: Azure/get-keyvault-secrets@v1.0
+      with:
+        keyvault: "P7KeyValut"
+        secrets: 'cct-certs'  # comma separated list of secret keys that need to be fetched from the Key Vault 
+      id: myGetSecretAction
+      
     - name: Sample Azure action get credentials
       run: |
         echo credentials:${{ secrets.p7keyvalut_client_id }} 
-        echo credentials:${{ secrets.p7keyvalut_client_secret }} 
+        echo credentials:${{ secrets.p7keyvalut_client_secret }}
+        echo credentials:${{ steps.myGetSecretAction.outputs.cct-certs  }} 
 
     
     
