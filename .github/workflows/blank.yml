@@ -35,16 +35,15 @@ jobs:
     - uses: Azure/get-keyvault-secrets@v1.0
       with:
         keyvault: "P7KeyValut"
-        secrets: 'cct-certs'  # comma separated list of secret keys that need to be fetched from the Key Vault 
+        secrets: 'P7IdentityServer4SelfSigned-b64pfx'  # comma separated list of secret keys that need to be fetched from the Key Vault 
       id: myGetSecretAction
       
     - name: Sample Azure action get credentials
       run: |
         echo credentials:${{ secrets.p7keyvalut_client_id }} 
         echo credentials:${{ secrets.p7keyvalut_client_secret }}
-        echo credentials:${{ steps.myGetSecretAction.outputs.cct-certs  }} 
+        echo credentials:${{ steps.myGetSecretAction.outputs.P7IdentityServer4SelfSigned-b64pfx  }} 
 
-    
     
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - name: Checkout
@@ -59,7 +58,14 @@ jobs:
 
     - name: Build with msbuild
       run: msbuild .\windows-native-signing\windows-native-signing.sln /p:Configuration=Release
-
+      
+    - name: sign
+      uses: dlemstra/code-sign-action@v1
+      with:
+        certificate: '${{ steps.myGetSecretAction.outputs.P7IdentityServer4SelfSigned-b64pfx }}'
+        folder: 'windows-native-signing\x64\Release'
+        recursive: true
+    
     # Runs a set of commands using the runners shell
     - name: Run a multi-line script
       run: |
