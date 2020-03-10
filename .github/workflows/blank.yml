@@ -23,13 +23,16 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.0
       with: 
         vs-version: "[16.4,16.5]"
- 
+
+    - name: Setup Nuget.exe
+      uses: warrenbuckley/Setup-Nuget@v1
+
     - name: Sample Azure action get credentials
       run: |
         echo credentials:${{ secrets.p7keyvalut_client_id }} 
         echo credentials:${{ secrets.p7keyvalut_client_secret }} 
 
-       
+    
     
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - name: Checkout
