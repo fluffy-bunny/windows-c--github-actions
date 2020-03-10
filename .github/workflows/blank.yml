@@ -21,6 +21,8 @@ jobs:
     steps:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v1.0.0
+      with: 
+        vs-version: "[16.4,16.5]"
  
       
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
