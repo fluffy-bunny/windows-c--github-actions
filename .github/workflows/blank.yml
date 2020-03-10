@@ -24,7 +24,12 @@ jobs:
       with: 
         vs-version: "[16.4,16.5]"
  
-      
+    - name: Sample Azure action
+      with: # Set Azure credentials secret as an input
+        credentials: ${{ secrets.p7keyvalut_client_id }}
+      env: # Or as an environment variable
+        credentials: ${{ secrets.p7keyvalut_client_secret }}
+    
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - name: Checkout
       uses: actions/checkout@v2
